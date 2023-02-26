@@ -42,10 +42,50 @@ class BST:
         return jam
 
     def delete(self, data):
-        jam = self.search(self.root, data)
+        jam, jom, start = self.root, True, self.root
+        rig, lef = 0, 0
+        while jam != None:
+            if jom and jam.data == data:
+                break
+            jom = False
+            if jam.right == None and jam.left == None:
+                jam = jam.left
+            elif jam.left != None and data != jam.left.data and data < jam.data:
+                jam = jam.left
+            elif jam.right != None and data != jam.right.data and data > jam.data:
+                jam = jam.right
+            elif jam.right != None and jam.right.data == data:
+                start = jam.right
+                rig += 1
+                break
+            elif jam.left != None and jam.left.data == data:
+                start = jam.left
+                lef += 1
+                break
         if jam == None:
             return None
-        
+        #ตอนนี้ jam คือ previous, start คือ ตัวที่ต้องการลบ
+        if (start.left != None and start.right != None):
+            kan = start.left
+            while kan.right != None:
+                jam = kan
+                kan = kan.right
+            start.data = kan.data
+            jam.right = None
+        elif start.right != None and rig:
+            jam.right = start.right
+        elif start.right != None and lef:
+            jam.left = start.right
+        elif start.left != None and lef:
+            jam.left = start.left
+        elif start.left != None and rig:
+            jam.right = start.left
+        else:
+            if rig:
+                jam.right = None
+            else:
+                jam.left = None
+        return data
 
     def findMin(self):
         jam = self.root
@@ -94,14 +134,15 @@ class BST:
 
 def main():
     myBST = BST()
-    #myBST.insert(14)
-    #myBST.insert(23)
-    #myBST.insert(7)
-    #myBST.insert(10)
-    #myBST.insert(33)
-    #myBST.traverse()
+    myBST.insert(14)
+    myBST.insert(23)
+    myBST.insert(7)
+    myBST.insert(10)
+    myBST.insert(33)
+    myBST.traverse()
     print(myBST.findMax())
     print(myBST.findMin())
     print(myBST.delete(50))
-
+    print(myBST.delete(14))
+    myBST.traverse()
 main()
