@@ -65,13 +65,16 @@ class BST:
         if jam == None:
             return None
         #ตอนนี้ jam คือ previous, start คือ ตัวที่ต้องการลบ
-        if (start.left != None and start.right != None):
+        if (self.root.data == data and self.root.right == self.root.left):
+            self.root = None
+            return data
+        elif (start.left != None and start.right != None):
             kan = start.left
             while kan.right != None:
                 jam = kan
                 kan = kan.right
+            self.delete(kan.data)
             start.data = kan.data
-            jam.right = None
         elif start.right != None and rig:
             jam.right = start.right
         elif start.right != None and lef:
